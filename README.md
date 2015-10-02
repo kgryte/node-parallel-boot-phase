@@ -110,13 +110,14 @@ boot( done );
 To run the example code from the top-level application directory,
 
 ``` bash
-$ node ./examples/index.js
+$ DEBUG=* node ./examples/index.js
 ```
 
 
 ## See Also
 
 -	[app-boot](https://github.com/kgryte/node-app-boot)
+-	[series-boot-phase](https://github.com/kgryte/node-series-boot-phase)
 
 
 ## Tests
