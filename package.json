@@ -1,6 +1,6 @@
 {
   "name": "parallel-boot-phase",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Parallel boot phase when booting an application.",
   "author": {
     "name": "Athan Reines",
