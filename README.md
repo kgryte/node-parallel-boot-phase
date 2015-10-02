@@ -114,6 +114,11 @@ $ node ./examples/index.js
 ```
 
 
+## See Also
+
+-	[app-boot](https://github.com/kgryte/node-app-boot)
+
+
 ## Tests
 
 ### Unit
