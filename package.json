@@ -38,6 +38,7 @@
     "url": "https://github.com/kgryte/node-parallel-boot-phase/issues"
   },
   "dependencies": {
+    "validate.io-array": "^1.0.6",
     "validate.io-function": "^1.0.2"
   },
   "devDependencies": {

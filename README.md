@@ -35,6 +35,12 @@ function boop( app, next ) {
 var phase = parallel( beep, boop );
 ```
 
+A function `array` is also accepted.
+
+``` javascript
+var phase = parallel( [ beep, boop ] );
+```
+
 
 ## Notes
 

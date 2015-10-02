@@ -29,7 +29,38 @@ describe( 'parallel-boot-phase', function tests() {
 		}
 	});
 
+	it( 'should throw an error if provided an empty array', function test() {
+		expect( foo ).to.throw( Error );
+		function foo() {
+			parallel( [] );
+		}
+	});
+
 	it( 'should throw an error if any input argument is not a function', function test() {
+		var values,
+			i;
+
+		values = [
+			'5',
+			5,
+			NaN,
+			null,
+			undefined,
+			// [], // allowed as long as contains functions
+			{}
+		];
+
+		for ( i = 0; i < values.length; i++ ) {
+			expect( badValue( values[ i ] ) ).to.throw( TypeError );
+		}
+		function badValue( value ) {
+			return function badValue() {
+				parallel( noop, value );
+			};
+		}
+	});
+
+	it( 'should throw an error if an input array element is not a function', function test() {
 		var values,
 			i;
 
@@ -48,7 +79,7 @@ describe( 'parallel-boot-phase', function tests() {
 		}
 		function badValue( value ) {
 			return function badValue() {
-				parallel( noop, value );
+				parallel( [ noop, value ] );
 			};
 		}
 	});
@@ -59,6 +90,35 @@ describe( 'parallel-boot-phase', function tests() {
 
 	it( 'should complete only when all provided functions complete', function test( done ) {
 		var phase = parallel( foo, bar, bap );
+		phase( clbk );
+		function foo( next ) {
+			setTimeout( onTimeout, 250 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function bar( next ) {
+			setTimeout( onTimeout, 500 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function bap( next ) {
+			setTimeout( onTimeout, 0 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function clbk( error ) {
+			if ( error ) {
+				assert.ok( false );
+			}
+			done();
+		}
+	});
+
+	it( 'should complete only when all provided functions complete (input array)', function test( done ) {
+		var phase = parallel( [ foo, bar, bap ] );
 		phase( clbk );
 		function foo( next ) {
 			setTimeout( onTimeout, 250 );
