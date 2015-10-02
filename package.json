@@ -41,6 +41,7 @@
     "validate.io-function": "^1.0.2"
   },
   "devDependencies": {
+    "@kgryte/noop": "^1.0.0",
     "app-boot": "^1.0.0",
     "chai": "3.x.x",
     "codecov.io": "^0.1.5",
