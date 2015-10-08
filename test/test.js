@@ -278,4 +278,80 @@ describe( 'parallel-boot-phase', function tests() {
 		}
 	});
 
+	it( 'should allow the phase to be run multiple times (simultaneously)', function test( done ) {
+		var phase,
+			cnt;
+
+		phase = parallel( foo, bar, bap );
+		cnt = 0;
+		phase( clbk );
+		phase( clbk );
+		phase( clbk );
+		function foo( next ) {
+			setTimeout( onTimeout, 1 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function bar( next ) {
+			setTimeout( onTimeout, 2 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function bap( next ) {
+			setTimeout( onTimeout, 0 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function clbk( error ) {
+			if ( error ) {
+				assert.ok( false );
+			}
+			cnt += 1;
+			if ( cnt === 3 ) {
+				done();
+			}
+		}
+	});
+
+	it( 'should allow the phase to be run multiple times (sequentially)', function test( done ) {
+		var phase,
+			cnt;
+
+		phase = parallel( foo, bar, bap );
+		cnt = 0;
+		phase( clbk );
+		function foo( next ) {
+			setTimeout( onTimeout, 1 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function bar( next ) {
+			setTimeout( onTimeout, 2 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function bap( next ) {
+			setTimeout( onTimeout, 0 );
+			function onTimeout() {
+				next();
+			}
+		}
+		function clbk( error ) {
+			if ( error ) {
+				assert.ok( false );
+			}
+			cnt += 1;
+			if ( cnt < 3 ) {
+				phase( clbk );
+			} else {
+				done();
+			}
+		}
+	});
+
 });
